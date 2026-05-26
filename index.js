@@ -1,25 +1,22 @@
-const TelegramBot = require(‘node-telegram-bot-api’);
+const https = require('https');
 
-const token = process.env.BOT_TOKEN;
-const chatId = process.env.CHAT_ID;
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
 
-const bot = new TelegramBot(token, {
-polling: false
+const message =
+encodeURIComponent('✅ TSAMSA BOT ONLINE');
+
+const url =
+`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${message}`;
+
+https.get(url, (res) => {
+
+console.log('STATUS:', res.statusCode);
+
+}).on('error', (err) => {
+
+console.log(err);
+
 });
 
-async function startBot() {
-
-try {
-    console.log('TSAMSA BOT STARTING...');
-    await bot.sendMessage(
-        chatId,
-        '✅ TSAMSA BOT ONLINE'
-    );
-    console.log('MESSAGE SENT');
-} catch (error) {
-    console.log(error);
-}
-
-}
-
-startBot();
+console.log('BOT STARTED');
